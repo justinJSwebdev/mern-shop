@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { routes } from "./routes";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import MainLayout from "./layouts/MainLayout/MainLayout";
+import { ConfigProvider } from 'antd';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <BrowserRouter>
+      <Routes>
+
+        {routes.map((route, index) => {
+          const Page = route.page
+          return (
+            <Route key={index} path={route.path} element={
+              <ConfigProvider theme={{
+                token: {
+                  fontFamily: 'Montserrat'
+                }
+              }}>
+                <MainLayout>
+                  <Page></Page>
+                </MainLayout>
+              </ConfigProvider>
+            }></Route>
+          )
+        })}
+
+        <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
